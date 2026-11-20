@@ -1,4 +1,5 @@
 import Song from "../models/Song.js";
+import { importJamendoTracks } from "../services/jamendoService.js";
 export async function list(req, res, next) {
   try {
     const q = req.query.q?.trim();
@@ -19,6 +20,14 @@ export async function getOne(req, res, next) {
     const s = await Song.findById(req.params.id);
     if (!s) return res.status(404).json({ message: "Song not found" });
     res.json(s);
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function importJamendo(req, res, next) {
+  try {
+    res.json(await importJamendoTracks(req.body));
   } catch (e) {
     next(e);
   }

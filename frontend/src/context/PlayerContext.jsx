@@ -92,6 +92,16 @@ export function PlayerProvider({ children }) {
     audio.current.volume = v;
     setVolumeState(v);
   };
+  const toggleShuffle = () => {
+    const value = !shuffle;
+    setShuffle(value);
+    send({ type: "settings", shuffle: value, repeatMode: repeat });
+  };
+  const cycleRepeat = () => {
+    const value = repeat === "off" ? "all" : repeat === "all" ? "one" : "off";
+    setRepeat(value);
+    send({ type: "settings", shuffle, repeatMode: value });
+  };
   useEffect(() => {
     if (!state?.currentSongId) return;
     const id =
@@ -141,6 +151,8 @@ export function PlayerProvider({ children }) {
         setQueue,
         setShuffle,
         setRepeat,
+        toggleShuffle,
+        cycleRepeat,
       }}
     >
       {children}
