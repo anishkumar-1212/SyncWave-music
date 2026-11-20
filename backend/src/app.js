@@ -1,0 +1,16 @@
+import express from "express";
+import cors from "cors";
+import auth from "./routes/authRoutes.js";
+import songs from "./routes/songRoutes.js";
+import playlists from "./routes/playlistRoutes.js";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+const app = express();
+app.use(cors({ origin: process.env.CLIENT_URL?.split(",") || true }));
+app.use(express.json());
+app.get("/api/health", (req, res) => res.json({ ok: true }));
+app.use("/api/auth", auth);
+app.use("/api/songs", songs);
+app.use("/api/playlists", playlists);
+app.use(notFound);
+app.use(errorHandler);
+export default app;
